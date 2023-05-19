@@ -1,6 +1,8 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/下载中.png</file>
     <file>icons/未选中圆点.png</file>
+    <file>icons/下载.png</file>
     <file>icons/圆点.png</file>
     <file>icons/未选中圆点.png</file>
     <file>icons/自定义.png</file>
@@ -15,7 +17,6 @@
     <file>icons/close.png</file>
   </qresource>
   <qresource prefix="youxi">
-    <file>games/PlaneWar/PlaneWar.png</file>
     <file>images/2048.jpg</file>
     <file>images/FB.jpg</file>
     <file>images/FJ.jpg</file>

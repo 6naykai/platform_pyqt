@@ -1,16 +1,13 @@
+import csv
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QMouseEvent
 from PyQt5.QtWidgets import QMessageBox
-
-# from database.database_root import Database_root
-# from .game_screen_window import GameScreen_game, GameScreen_music, GameScreen_user, GameScreen_quanxian, \
-#     GameScreen_musicManagement, GameScreen_musicDownload, GameScreen_gameManagement
-from .game_screen_window import GameScreen_music
+from .game_screen_window import GameScreen_music, GameScreen_game
 
 
 # 使用界面窗口
-class GameScreen(GameScreen_music):
+class GameScreen(GameScreen_music, GameScreen_game):
 
     # 窗口切换信号
     switch_window = QtCore.pyqtSignal()
@@ -21,16 +18,15 @@ class GameScreen(GameScreen_music):
         self._tracking = None
         self._endPos = None
         self.setWindowTitle("创意游戏平台")  # 设置窗口名
-        # 界面初始化
-        self.ui_init()
         # 连接按钮
         self.connecter()
-        # 用户名及身份设置
-        self.user_name = ""
-        self.user_permission = ""
-        # 数据库的设置：显示用户名和身份
-        self.database = Database_root()
+        # 用户名及身份设置：从remember文件中读取
+        self.username = ""
+        self.usertype = ""
+        self.remembered_path = 'remembered_account.csv'  # 记住密码的文件相对地址
         self.account_init()
+        # 界面初始化(根据用户身份)
+        self.ui_init()
         # 权限管控
         self.account_permission()
 
@@ -38,51 +34,63 @@ class GameScreen(GameScreen_music):
     def account_permission(self):
         self.listWidget.clear()
         user_list = ["音乐", "游戏"]
-        user_admin_list = ["音乐", "游戏", "用户管理"]
-        music_admin_list = ["音乐", "游戏", "音乐管理", "音乐下载"]
-        game_admin_list = ["音乐", "游戏", "游戏管理"]
+        user_admin_list = ["用户管理"]
+        music_admin_list = ["音乐管理", "音乐下载"]
+        game_admin_list = ["游戏管理"]
+        model_admin_list = []
         root_list = ["音乐", "游戏", "音乐管理", "音乐下载", "游戏管理", "用户管理", "权限管理"]
-        if self.user_permission == "普通用户":
+        if self.usertype == "普通用户":
             self.listWidget.addItems(user_list)
-        elif self.user_permission == "用户管理员":
+        elif self.usertype == "用户管理员":
             self.listWidget.addItems(user_admin_list)
-        elif self.user_permission == "音乐管理员":
+        elif self.usertype == "音乐管理员":
             self.listWidget.addItems(music_admin_list)
-        elif self.user_permission == "游戏管理员":
+        elif self.usertype == "游戏管理员":
             self.listWidget.addItems(game_admin_list)
+        elif self.usertype == "模型管理员":
+            self.listWidget.addItems(model_admin_list)
         else:
             self.listWidget.addItems(root_list)
+        # 设置listWidget当前选中条目为列表第1项
+        self.listWidget.setCurrentItem(self.listWidget.item(0))
 
-    # 账户信息初始化：设置用户名和身份
+    # 账户信息初始化：设置用户名和用户类型
     def account_init(self):
-        # 设置用户名
-        data = self.database.select("user_remembered")
-        self.label_username.setText(data[0][0])
-        self.user_name = data[0][0]
-        # 设置身份
-        dataadm = self.database.select("administrator_table")
-        flag = 1    # 管理员标志：若管理员表中查不到该用户,则设置为0
-        for i in range(len(dataadm)):
-            if dataadm[i][0] == data[0][0]:
-                self.label_usershuxing.setText(dataadm[i][2])
-                self.user_permission = dataadm[i][2]
-                flag = 0
-        if flag:
-            self.label_usershuxing.setText("普通用户")
-            self.user_permission = "普通用户"
+        with open(self.remembered_path, "rt", encoding='utf-8-sig') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                self.username = row[0]
+                self.usertype = row[3]
+        csvfile.close()
+        # 用户名与身份的界面初始化
+        self.label_username.setText(self.username)
+        self.label_usershuxing.setText(self.usertype)
 
     # 界面初始化
     def ui_init(self):
         # 隐藏框
         self.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏标题栏
         self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
-        # 初始化游戏初始界面
+        # 初始化系统初始界面
         self.widget_musics.hide()
+        self.widget_games.hide()
         self.widget_users.hide()
         self.widget_quanxians.hide()
         self.widget_musics_management.hide()
         self.widget_musics_download.hide()
         self.widget_games_management.hide()
+        if self.usertype == "普通用户":
+            self.widget_musics.show()
+        elif self.usertype == "用户管理员":
+            self.widget_users.show()
+        elif self.usertype == "音乐管理员":
+            self.widget_musics_management.show()
+        elif self.usertype == "游戏管理员":
+            self.widget_games_management.show()
+        elif self.usertype == "模型管理员":
+            pass
+        elif self.usertype == "系统管理员":
+            self.widget_musics.show()
 
     # 连接按钮和对应的函数
     def connecter(self):
@@ -118,7 +126,6 @@ class GameScreen(GameScreen_music):
         if text == "游戏管理":
             self.widget_games_management.show()
         print(text)
-        pass
 
     # 返回登陆页面按钮
     def back(self):

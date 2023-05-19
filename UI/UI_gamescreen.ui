@@ -543,7 +543,7 @@ background:url(:/image/image/xia.png) center no-repeat;}             </string>
 }
 </string>
          </property>
-         <widget class="QWidget" name="widget_21" native="true">
+         <widget class="QWidget" name="widget_wuziqi_iconxia" native="true">
           <property name="geometry">
            <rect>
             <x>24</x>
@@ -555,7 +555,7 @@ background:url(:/image/image/xia.png) center no-repeat;}             </string>
           <property name="styleSheet">
            <string notr="true"/>
           </property>
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="label_wuziqi_icon">
            <property name="geometry">
             <rect>
              <x>30</x>
@@ -582,7 +582,20 @@ background:url(:/image/image/xia.png) center no-repeat;}             </string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">border-image: url(:/icons/icons/play_game.png);</string>
+           <string notr="true">QPushButton
+{
+    background-color:rgb(214, 244, 249);
+	border-radius:20px;
+	border-image: url(:/icons/icons/play_game.png);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(103, 216, 217);
+    padding-left:3px;
+    padding-top:3px;
+}
+</string>
           </property>
           <property name="text">
            <string/>
@@ -597,14 +610,14 @@ background:url(:/image/image/xia.png) center no-repeat;}             </string>
             <height>72</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout">
+          <layout class="QHBoxLayout" name="horizontalLayout_wuziqi">
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_2">
+            <layout class="QVBoxLayout" name="verticalLayout_wuziqi">
              <property name="spacing">
               <number>2</number>
              </property>
              <item>
-              <widget class="QLabel" name="label_35">
+              <widget class="QLabel" name="label_wuziqi">
                <property name="font">
                 <font>
                  <pointsize>16</pointsize>
@@ -626,7 +639,7 @@ text-align:centre;
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_36">
+              <widget class="QLabel" name="label_wuziqi_tishi">
                <property name="font">
                 <font>
                  <weight>50</weight>
@@ -642,7 +655,7 @@ text-align:centre;
               </widget>
              </item>
              <item>
-              <widget class="QProgressBar" name="progressBar_9">
+              <widget class="QProgressBar" name="progressBar__wuziqi">
                <property name="styleSheet">
                 <string notr="true">QProgressBar::chunk {
         border-top-left-radius:8px;
@@ -666,7 +679,7 @@ background-color: rgb(223, 223, 223);
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="label_37">
+            <widget class="QLabel" name="label_wuziqi_jindu">
              <property name="font">
               <font>
                <pointsize>17</pointsize>
@@ -750,7 +763,20 @@ background-color: rgb(223, 223, 223);
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">border-image: url(:/icons/icons/play_game.png);</string>
+           <string notr="true">QPushButton
+{
+    background-color:rgb(214, 244, 249);
+border-radius:20px;
+border-image: url(:/icons/icons/play_game.png);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(103, 216, 217);
+    padding-left:3px;
+    padding-top:3px;
+}
+</string>
           </property>
           <property name="text">
            <string/>
@@ -918,7 +944,7 @@ background-color: rgb(223, 223, 223);
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">border-image: url(:/icons/icons/play_game.png);</string>
+           <string notr="true">border-image: url(:/icons/icons/下载中.png);</string>
           </property>
           <property name="text">
            <string/>

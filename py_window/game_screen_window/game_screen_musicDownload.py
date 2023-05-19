@@ -4,7 +4,6 @@ import requests
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem, QAbstractItemView
 from .game_screen_init import GameScreen_init
-from database.database_root import Database_root
 
 
 # 使用界面窗口：音乐下载类

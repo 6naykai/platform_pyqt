@@ -263,51 +263,64 @@ class Ui_MainWindow(object):
 "}\n"
 "")
         self.widget_wuziqi.setObjectName("widget_wuziqi")
-        self.widget_21 = QtWidgets.QWidget(self.widget_wuziqi)
-        self.widget_21.setGeometry(QtCore.QRect(24, 24, 113, 73))
-        self.widget_21.setStyleSheet("")
-        self.widget_21.setObjectName("widget_21")
-        self.label_7 = QtWidgets.QLabel(self.widget_21)
-        self.label_7.setGeometry(QtCore.QRect(30, 5, 64, 64))
-        self.label_7.setStyleSheet("border-image: url(:/youxi/images/icon.ico);")
-        self.label_7.setText("")
-        self.label_7.setObjectName("label_7")
+        self.widget_wuziqi_iconxia = QtWidgets.QWidget(self.widget_wuziqi)
+        self.widget_wuziqi_iconxia.setGeometry(QtCore.QRect(24, 24, 113, 73))
+        self.widget_wuziqi_iconxia.setStyleSheet("")
+        self.widget_wuziqi_iconxia.setObjectName("widget_wuziqi_iconxia")
+        self.label_wuziqi_icon = QtWidgets.QLabel(self.widget_wuziqi_iconxia)
+        self.label_wuziqi_icon.setGeometry(QtCore.QRect(30, 5, 64, 64))
+        self.label_wuziqi_icon.setStyleSheet("border-image: url(:/youxi/images/icon.ico);")
+        self.label_wuziqi_icon.setText("")
+        self.label_wuziqi_icon.setObjectName("label_wuziqi_icon")
         self.pushButton_game_wuziqi = QtWidgets.QPushButton(self.widget_wuziqi)
         self.pushButton_game_wuziqi.setGeometry(QtCore.QRect(660, 30, 64, 64))
-        self.pushButton_game_wuziqi.setStyleSheet("border-image: url(:/icons/icons/play_game.png);")
+        self.pushButton_game_wuziqi.setStyleSheet("QPushButton\n"
+"{\n"
+"    background-color:rgb(214, 244, 249);\n"
+"    border-radius:20px;\n"
+"    border-image: url(:/icons/icons/play_game.png);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(103, 216, 217);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}\n"
+"")
         self.pushButton_game_wuziqi.setText("")
         self.pushButton_game_wuziqi.setObjectName("pushButton_game_wuziqi")
         self.layoutWidget1 = QtWidgets.QWidget(self.widget_wuziqi)
         self.layoutWidget1.setGeometry(QtCore.QRect(162, 25, 481, 72))
         self.layoutWidget1.setObjectName("layoutWidget1")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.layoutWidget1)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_2.setSpacing(2)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.label_35 = QtWidgets.QLabel(self.layoutWidget1)
+        self.horizontalLayout_wuziqi = QtWidgets.QHBoxLayout(self.layoutWidget1)
+        self.horizontalLayout_wuziqi.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_wuziqi.setObjectName("horizontalLayout_wuziqi")
+        self.verticalLayout_wuziqi = QtWidgets.QVBoxLayout()
+        self.verticalLayout_wuziqi.setSpacing(2)
+        self.verticalLayout_wuziqi.setObjectName("verticalLayout_wuziqi")
+        self.label_wuziqi = QtWidgets.QLabel(self.layoutWidget1)
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
         font.setWeight(75)
-        self.label_35.setFont(font)
-        self.label_35.setStyleSheet("color: rgb(22, 54, 53);\n"
+        self.label_wuziqi.setFont(font)
+        self.label_wuziqi.setStyleSheet("color: rgb(22, 54, 53);\n"
 "text-align:centre;\n"
 "")
-        self.label_35.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_35.setObjectName("label_35")
-        self.verticalLayout_2.addWidget(self.label_35)
-        self.label_36 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_wuziqi.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_wuziqi.setObjectName("label_wuziqi")
+        self.verticalLayout_wuziqi.addWidget(self.label_wuziqi)
+        self.label_wuziqi_tishi = QtWidgets.QLabel(self.layoutWidget1)
         font = QtGui.QFont()
         font.setBold(False)
         font.setWeight(50)
-        self.label_36.setFont(font)
-        self.label_36.setStyleSheet("color: rgb(22, 54, 53)")
-        self.label_36.setObjectName("label_36")
-        self.verticalLayout_2.addWidget(self.label_36)
-        self.progressBar_9 = QtWidgets.QProgressBar(self.layoutWidget1)
-        self.progressBar_9.setStyleSheet("QProgressBar::chunk {\n"
+        self.label_wuziqi_tishi.setFont(font)
+        self.label_wuziqi_tishi.setStyleSheet("color: rgb(22, 54, 53)")
+        self.label_wuziqi_tishi.setObjectName("label_wuziqi_tishi")
+        self.verticalLayout_wuziqi.addWidget(self.label_wuziqi_tishi)
+        self.progressBar__wuziqi = QtWidgets.QProgressBar(self.layoutWidget1)
+        self.progressBar__wuziqi.setStyleSheet("QProgressBar::chunk {\n"
 "        border-top-left-radius:8px;\n"
 "border-bottom-left-radius:8px;\n"
 "    background-color: rgb(103, 216, 217)\n"
@@ -317,21 +330,21 @@ class Ui_MainWindow(object):
 "background-color: rgb(223, 223, 223);\n"
 "}\n"
 "")
-        self.progressBar_9.setProperty("value", 100)
-        self.progressBar_9.setTextVisible(False)
-        self.progressBar_9.setObjectName("progressBar_9")
-        self.verticalLayout_2.addWidget(self.progressBar_9)
-        self.horizontalLayout.addLayout(self.verticalLayout_2)
-        self.label_37 = QtWidgets.QLabel(self.layoutWidget1)
+        self.progressBar__wuziqi.setProperty("value", 100)
+        self.progressBar__wuziqi.setTextVisible(False)
+        self.progressBar__wuziqi.setObjectName("progressBar__wuziqi")
+        self.verticalLayout_wuziqi.addWidget(self.progressBar__wuziqi)
+        self.horizontalLayout_wuziqi.addLayout(self.verticalLayout_wuziqi)
+        self.label_wuziqi_jindu = QtWidgets.QLabel(self.layoutWidget1)
         font = QtGui.QFont()
         font.setPointSize(17)
         font.setBold(True)
         font.setWeight(75)
-        self.label_37.setFont(font)
-        self.label_37.setStyleSheet("color: rgb(43, 101, 103);")
-        self.label_37.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_37.setObjectName("label_37")
-        self.horizontalLayout.addWidget(self.label_37)
+        self.label_wuziqi_jindu.setFont(font)
+        self.label_wuziqi_jindu.setStyleSheet("color: rgb(43, 101, 103);")
+        self.label_wuziqi_jindu.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_wuziqi_jindu.setObjectName("label_wuziqi_jindu")
+        self.horizontalLayout_wuziqi.addWidget(self.label_wuziqi_jindu)
         self.verticalLayout_15.addWidget(self.widget_wuziqi)
         self.widget_2048 = QtWidgets.QWidget(self.scrollAreaWidgetContents_3)
         self.widget_2048.setMinimumSize(QtCore.QSize(0, 121))
@@ -354,7 +367,20 @@ class Ui_MainWindow(object):
         self.label_24.setObjectName("label_24")
         self.pushButton_game_2048 = QtWidgets.QPushButton(self.widget_2048)
         self.pushButton_game_2048.setGeometry(QtCore.QRect(660, 30, 64, 64))
-        self.pushButton_game_2048.setStyleSheet("border-image: url(:/icons/icons/play_game.png);")
+        self.pushButton_game_2048.setStyleSheet("QPushButton\n"
+"{\n"
+"    background-color:rgb(214, 244, 249);\n"
+"border-radius:20px;\n"
+"border-image: url(:/icons/icons/play_game.png);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(103, 216, 217);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}\n"
+"")
         self.pushButton_game_2048.setText("")
         self.pushButton_game_2048.setObjectName("pushButton_game_2048")
         self.layoutWidget_2 = QtWidgets.QWidget(self.widget_2048)
@@ -434,7 +460,7 @@ class Ui_MainWindow(object):
         self.label_25.setObjectName("label_25")
         self.pushButton_game_niao = QtWidgets.QPushButton(self.widget_niao)
         self.pushButton_game_niao.setGeometry(QtCore.QRect(660, 30, 64, 64))
-        self.pushButton_game_niao.setStyleSheet("border-image: url(:/icons/icons/play_game.png);")
+        self.pushButton_game_niao.setStyleSheet("border-image: url(:/icons/icons/下载中.png);")
         self.pushButton_game_niao.setText("")
         self.pushButton_game_niao.setObjectName("pushButton_game_niao")
         self.layoutWidget_3 = QtWidgets.QWidget(self.widget_niao)
@@ -2872,9 +2898,9 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "games."))
         self.label_9.setText(_translate("MainWindow", "Active Games"))
         self.lineEdit_4.setPlaceholderText(_translate("MainWindow", "搜索游戏"))
-        self.label_35.setText(_translate("MainWindow", "五子棋"))
-        self.label_36.setText(_translate("MainWindow", "下载完成"))
-        self.label_37.setText(_translate("MainWindow", "100%"))
+        self.label_wuziqi.setText(_translate("MainWindow", "五子棋"))
+        self.label_wuziqi_tishi.setText(_translate("MainWindow", "下载完成"))
+        self.label_wuziqi_jindu.setText(_translate("MainWindow", "100%"))
         self.label_62.setText(_translate("MainWindow", "2048"))
         self.label_63.setText(_translate("MainWindow", "下载完成"))
         self.label_64.setText(_translate("MainWindow", "100%"))

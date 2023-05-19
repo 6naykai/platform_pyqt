@@ -32,8 +32,8 @@ class Login(Ui_MainWindow, QMainWindow):
         # 添加阴影
         self.add_shadow()
         # 前端post处理
-        self.post_login = MyPost('/user_table/login')
-        self.post_register = MyPost('/user_table/register')
+        self.post_login = MyPost('/public/login')
+        self.post_register = MyPost('/public/register')
         # 记住密码功能实现
         self.remembered_account = []    # 载入记住密码的列表
         self.remembered_path = 'remembered_account.csv'   # 记住密码的文件相对地址
@@ -92,10 +92,10 @@ class Login(Ui_MainWindow, QMainWindow):
                     self.lineEdit_login_account.setText(row[0])
 
     # 将账户写入记住密码文件中的函数
-    def write_remembered(self, account, password, remembered):
+    def write_remembered(self, account, password, remembered, usertype):
         with open(self.remembered_path, "w", newline='', encoding='utf-8-sig') as file:
             csv_writer = csv.writer(file, dialect="excel")
-            cell = [account, password, remembered]
+            cell = [account, password, remembered, usertype]
             csv_writer.writerow(cell)
         file.close()
 
@@ -111,17 +111,17 @@ class Login(Ui_MainWindow, QMainWindow):
         elif str(password) == "":
             QMessageBox.warning(self, "注意", "密码不能为空")
         else:
-            response = self.post_login.response({"user_name": str(account), "user_secret": str(password)})
-            if response["status"] == "成功":
-                QMessageBox.information(self, "提示", "登陆成功")
+            response = self.post_login.response_json({"username": str(account), "password": str(password)})
+            if response["状态"] == "成功":
+                QMessageBox.information(self, "提示", response["提示信息"])
+                # 将账户写入记住密码文件中
+                self.write_remembered(account, password, self.checkBox_rememberPassword.isChecked(), response["用户类型"])
                 # 成功登陆后跳转到验证窗口
                 self.switch_window.emit()
-                # 将账户写入记住密码文件中
-                self.write_remembered(account, password, self.checkBox_rememberPassword.isChecked())
                 return  # 后续添加恢复账户可用输入错误机会(已实现,通过数据库进行隔离)
             else:
-                # 若遍历完整个账户列表仍未查到该用户
-                QMessageBox.warning(self, "注意", response['beizhu'])
+                # 若登陆失败
+                QMessageBox.warning(self, "注意", response["提示信息"])
             # 清空账户输入框和密码输入框
             self.lineEdit_login_account.clear()
             self.lineEdit_login_password.clear()
@@ -131,7 +131,6 @@ class Login(Ui_MainWindow, QMainWindow):
         """
         注册确认按钮出发函数,包括一些合法性的检测,账户信息的输入与记录
         """
-        # temp = {}       # 存放当前账户信息
         account = self.lineEdit_register_account.text()
         password = self.lineEdit_register_password.text()
         passwordConfirm = self.lineEdit_register_passwordConfirm.text()
@@ -144,16 +143,23 @@ class Login(Ui_MainWindow, QMainWindow):
             self.lineEdit_register_password.clear()
             self.lineEdit_register_passwordConfirm.clear()
         else:
-            response = self.post_register.response({"user_name": str(account), "user_secret": str(password)})
-            if response["status"] == "成功":
-                QMessageBox.information(self, "提示", "注册成功!")
+            response = self.post_register.response_json({"username": str(account), "password": str(password)})
+            if response["状态"] == "成功":
+                QMessageBox.information(self, "提示", response["提示信息"])
+                # 注册成功则跳转回登陆页面,并清空注册框内容
+                self.landing()
+                self.lineEdit_register_account.clear()
+                self.lineEdit_register_password.clear()
+                self.lineEdit_register_passwordConfirm.clear()
+                self.lineEdit_login_account.setText(account)
+                self.lineEdit_login_password.setText(password)
+                return
             else:
-                QMessageBox.information(self, "注意", "注册失败！请联系后端管理人员")
-            # 注册成功则跳转回登陆页面,并清空注册框内容
-            self.landing()
-            self.lineEdit_register_account.clear()
-            self.lineEdit_register_password.clear()
-            self.lineEdit_register_passwordConfirm.clear()
+                QMessageBox.information(self, "注意", response["提示信息"])
+                self.lineEdit_register_account.clear()
+                self.lineEdit_register_password.clear()
+                self.lineEdit_register_passwordConfirm.clear()
+                return
 
     # 控件阴影添加
     def add_shadow(self):

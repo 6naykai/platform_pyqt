@@ -1,9 +1,12 @@
+import re
+import os
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QIcon
 from PyQt5.QtMultimedia import QMediaPlaylist, QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import QMainWindow
 import random
 from .game_screen_init import GameScreen_init
+from util import music_storePath, MyPost
 
 
 # 使用界面窗口：音乐界面类
@@ -14,12 +17,12 @@ class GameScreen_music(GameScreen_init, QMainWindow):
         self.horizontalSlider_volume.setRange(0, 100)  # 音量范围
         self.horizontalSlider_volume.setValue(100)  # 初始音量
         self.horizontalSlider_progress.setEnabled(False)  # 音乐进度初始化为不可用
-        # 数据库的设置
-        self.database_music = Database_root()
+        # 前端post设置
+        self.post_musicInit = MyPost('/user/musicInit')
         # 音频设置及初始化
-        self.music_list = []        # 音频相对路径列表
-        self.musicName_list = []    # 音频名称列表
-        self.music_index_dict = {}  # 音频媒体索引链接字典
+        self.musicsPath_list = []        # 音频前端绝对路径列表
+        self.musicsName_list = []        # 音频名称列表
+        self.music_index_dict = {}       # 音频媒体索引链接字典
         self.playlist = QMediaPlaylist(self)
         self.player = QMediaPlayer(self)
         self.music_init()
@@ -39,46 +42,38 @@ class GameScreen_music(GameScreen_init, QMainWindow):
     # 音频初始化
     def music_init(self):
         # 初始化
-        self.music_list = []  # 音频相对路径列表
-        self.musicName_list = []  # 音频名称列表
+        self.musicsPath_list = []  # 音频相对路径列表
+        self.musicsName_list = []  # 音频名称列表
         self.music_index_dict = {}  # 音频媒体索引链接字典
-        self.listWidget_music.clear()
-        # # 播放控件和label控件初始化
-        # self.label_time.setText('--/--')
-        # self.pushButton_play_pause.setIcon(QIcon('icons/play.png'))
-        # # slider控件初始化
-        # self.horizontalSlider_volume.setRange(0, 100)  # 音量范围
-        # self.horizontalSlider_volume.setValue(100)  # 初始音量
-        # self.horizontalSlider_progress.setValue(0)
-        # self.horizontalSlider_progress.setEnabled(False)  # 音乐进度初始化为不可用
-        # # 音频通道初始化
-        # self.playlist = QMediaPlaylist(self)
-        # self.player = QMediaPlayer(self)
+        self.listWidget_music.clear()   # 清空音频显示列表
         self.player.setPlaylist(self.playlist)  # 设置play的播放列表为playlist
-        # 获取列表数据
-        data = self.database_music.select("music_table")
-        for i in range(len(data)):
-            if data[i][2]:
-                self.musicName_list.append(data[i][0])
-                self.music_list.append(data[i][1])
-        self.listWidget_music.addItems(self.musicName_list)
-        # self.music_list = ['musics/verify_jntm.mp3',
-        #                    'musics/verify_hugme.mp3',
-        #                    'musics/情人.mp3',
-        #                    'musics/迷.mp3',
-        #                    'musics/Wait Wait Wait.mp3',
-        #                    'musics/爱与痛.mp3',
-        #                    'musics/感受她.mp3']
-        # self.listWidget_music.addItem('只因你太美.mp3')
-        # self.listWidget_music.addItem('Hug me.mp3')
-        # self.listWidget_music.addItem('情人.mp3')
-        # self.listWidget_music.addItem('迷.mp3')
-        # self.listWidget_music.addItem('Wait Wait Wait.mp3')
-        # self.listWidget_music.addItem('爱与痛.mp3')
-        # self.listWidget_music.addItem('感受她.mp3')
+        # 获取前端音乐资源存储路径下的所有音乐路径和所有音乐名称
+        musicsPath = os.listdir(music_storePath)
+        musicsName = []
+        for musicPath in musicsPath:
+            # re.findall正则获取前端音乐路径对应的音乐名称
+            music_name = re.findall(r'(.+?)\.mp3', re.findall(r'[^\\/:*?"<>|\r\n]+$', musicPath)[0])[0]
+            musicsName.append(music_name)
+        # 根据后端具体设置,来设置前端播放器播放内容
+        response = self.post_musicInit.response_json()
+        for musicName_flask, musicPath_flask in response.items():
+            self.musicsName_list.append(musicName_flask)
+            # 若前端已存在音乐文件,则直接写入播放器
+            if musicName_flask in musicsName:
+                musicPath_pyqt = music_storePath + musicName_flask + '.mp3'
+                self.musicsPath_list.append(musicPath_pyqt)
+            # 否则,从后端下载音乐到本地再进行写入
+            else:
+                postExtendPath = '/user/musicDownload/' + musicPath_flask
+                post_downloadMusic = MyPost(postExtendPath)
+                post_downloadMusic.download_music(musicName_flask)
+                musicPath_pyqt_download = music_storePath + musicName_flask + '.mp3'
+                self.musicsPath_list.append(musicPath_pyqt_download)
+        # 设置前端播放器
+        self.listWidget_music.addItems(self.musicsName_list)
         index = 0
         self.playlist.clear()
-        for music_path in self.music_list:
+        for music_path in self.musicsPath_list:
             self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(music_path)))  # 媒体播放列表添加歌曲
             self.music_index_dict[str(index)] = str(music_path)  # 音频媒体索引链接字典添加歌曲
             index += 1
