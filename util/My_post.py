@@ -41,7 +41,7 @@ class MyPost:
 
     def download_game(self, gameName, progressbar):
         """
-        暂时废弃
+        暂时废弃,(因控件连接关系,必须放入类函数中构建)
         :param gameName:
         :param progressbar:
         :return:

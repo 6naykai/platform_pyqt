@@ -1,15 +1,21 @@
 import os
 import re
+import subprocess
+
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow
 from .game_screen_init import GameScreen_init
 from util import MyPost, game_storePath, downloadThread
+import threading
 
 
-# 通过路径启动exe游戏: 后续增加多线程处理,目前启动不了多个游戏
+# 通过路径启动exe游戏
 def runGame(gamePath):
-    os.system(gamePath)
+    def runExe():
+        # os.system(gamePath)
+        subprocess.Popen([gamePath])
+    return runExe
 
 
 # 使用界面窗口：游戏界面类
@@ -46,13 +52,17 @@ class GameScreen_game(GameScreen_init, QMainWindow):
                 self.gamesDict[gameName] = [gamePath, True]
         return jindu_change
 
-    # 通过路径下载exe游戏,已采用多线程处理
+    # 通过路径下载exe游戏,已采用多线程处理(若已下载,则运行游戏)
     def downloadGame(self, gameName):
         # 定义触发函数
         def down():
             # gamePath_bendi = game_storePath + gameName + '.exe'
+            # 若游戏已下载,则启动(已增加多线程)
             if self.gamesDict[gameName][1]:
-                os.system(self.gamesDict[gameName][0])
+                new_thread = threading.Thread(target=runGame(self.gamesDict[gameName][0]))
+                new_thread.start()
+                # os.system(self.gamesDict[gameName][0])
+            # 若游戏未下载,则从后端下载
             else:
                 postExtendPath = '/user/gameDownload/' + self.gamesDict[gameName][0]
                 post_downloadGame = MyPost(postExtendPath)
