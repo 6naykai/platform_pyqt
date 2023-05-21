@@ -16,8 +16,8 @@ class GameScreen_musicDownload(GameScreen_init, QMainWindow):
         self.song_num = None
         self.header_musicDownload = None
         self.response_data = None
-        # 数据库设置
-        self.database_download = Database_root()
+        # 前端post设置
+        self
         # 设置表格头的伸缩模式，也就是让表格铺满整个QTableWidget控件
         self.tableWidget_music_download.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.connecter_musicDownload()

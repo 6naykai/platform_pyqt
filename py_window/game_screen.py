@@ -3,11 +3,13 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QMouseEvent
 from PyQt5.QtWidgets import QMessageBox
-from .game_screen_window import GameScreen_music, GameScreen_game, GameScreen_user, GameScreen_quanxian
+from .game_screen_window import GameScreen_music, GameScreen_game, GameScreen_user, \
+    GameScreen_quanxian, GameScreen_musicManagement
 
 
 # 使用界面窗口
-class GameScreen(GameScreen_music, GameScreen_game, GameScreen_user, GameScreen_quanxian):
+class GameScreen(GameScreen_music, GameScreen_game, GameScreen_user,
+                 GameScreen_quanxian, GameScreen_musicManagement):
 
     # 窗口切换信号
     switch_window = QtCore.pyqtSignal()
@@ -116,14 +118,18 @@ class GameScreen(GameScreen_music, GameScreen_game, GameScreen_user, GameScreen_
             self.gameWidget_init()
             self.widget_games.show()
         if text == "用户管理":
+            self.refresh_user()
             self.widget_users.show()
         if text == "权限管理":
+            self.refresh_quanxian()
             self.widget_quanxians.show()
         if text == "音乐管理":
+            self.refresh_music()
             self.widget_musics_management.show()
         if text == "音乐下载":
             self.widget_musics_download.show()
         if text == "游戏管理":
+            # self.refresh_game()
             self.widget_games_management.show()
         print(text)
 

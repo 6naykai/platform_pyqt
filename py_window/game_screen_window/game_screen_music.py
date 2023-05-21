@@ -64,7 +64,9 @@ class GameScreen_music(GameScreen_init, QMainWindow):
                 self.musicsPath_list.append(musicPath_pyqt)
             # 否则,从后端下载音乐到本地再进行写入
             else:
-                postExtendPath = '/user/musicDownload/' + musicPath_flask
+                # 要进行路径路由转化
+                musicPath = musicPath_flask.replace('/', '\\')
+                postExtendPath = '/user/musicDownload/' + musicPath
                 post_downloadMusic = MyPost(postExtendPath)
                 post_downloadMusic.download_music(musicName_flask)
                 musicPath_pyqt_download = music_storePath + musicName_flask + '.mp3'
