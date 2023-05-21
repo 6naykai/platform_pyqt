@@ -185,7 +185,7 @@ class GameScreen_musicManagement(GameScreen_init, QMainWindow):
                 else:
                     self.post_musicUpdateIsAccretion.response_json({'musicName': item[0],
                                                                     'newIsAccretion': item[2]})
-                    print("update music")
+                    print("update music", item)
         for item in self.saveList_music:
             if item[0] not in _idList:
                 self.post_musicDelete.response_json({'musicName': item[0]})

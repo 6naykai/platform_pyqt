@@ -1,7 +1,6 @@
 import os
 import re
 import subprocess
-
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow
@@ -110,22 +109,26 @@ class GameScreen_game(GameScreen_init, QMainWindow):
         gamesPath = os.listdir(game_storePath)
         gamesName = []
         for gamePath in gamesPath:
-            # re.findall正则获取前端音乐路径对应的音乐名称
+            # re.findall正则获取前端游戏路径对应的游戏名称
             game_name = re.findall(r'(.+?)\.exe', re.findall(r'[^\\/:*?"<>|\r\n]+$', gamePath)[0])[0]
             gamesName.append(game_name)
         # 根据后端具体设置,来设置前端游戏页面内容
         response = self.post_gameInit.response_json()
-        gameNum = 0
         for gameName_flask, gamePath_flask in response.items():
+            # re.findall正则获取游戏uuid
+            gameUuid = re.findall(r'(.+?)\.exe', re.findall(r'[^\\/:*?"<>|\r\n]+$', gamePath_flask)[0])[0]
+            # print(gameUuid)
+            gameUuid = gameUuid.replace('-', '_')
+            # print(gameUuid)
             # 若字典中存在键,则跳过
-            if gameName_flask in self.gamesDict:
+            if gameUuid in self.gamesDict:
                 continue
             if gameName_flask in gamesName:
-                self.createGameUI_AlreadyDownload(gameName_flask, gameName_flask)
-                self.gamesDict[gameName_flask] = [gamePath_flask, True]
+                self.createGameUI_AlreadyDownload(gameUuid, gameName_flask)
+                self.gamesDict[gameUuid] = [gamePath_flask, True]
             else:
-                self.createGameUI_NotDownload(gameName_flask, gameName_flask)
-                self.gamesDict[gameName_flask] = [gamePath_flask, False]
+                self.createGameUI_NotDownload(gameUuid, gameName_flask)
+                self.gamesDict[gameUuid] = [gamePath_flask, False]
         # self.createGameUI_NotDownload("game101", "五子棋")
         # self.createGameUI_AlreadyDownload("game100", "aaa")
         self.hide_oldWidget()
