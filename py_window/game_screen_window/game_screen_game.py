@@ -64,7 +64,9 @@ class GameScreen_game(GameScreen_init, QMainWindow):
                 # os.system(self.gamesDict[gameName][0])
             # 若游戏未下载,则从后端下载
             else:
-                postExtendPath = '/user/gameDownload/' + self.gamesDict[gameName][0]
+                # *********要进行路径路由转化*******
+                gamePath = self.gamesDict[gameName][0].replace('/', '\\')
+                postExtendPath = '/user/gameDownload/' + gamePath
                 post_downloadGame = MyPost(postExtendPath)
                 the_filesize = post_downloadGame.getContentLength()
                 the_filepath = game_storePath + gameName + '.exe'

@@ -3,6 +3,7 @@ import re
 import requests
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem, QAbstractItemView
+from util import MyPost, music_storePath
 from .game_screen_init import GameScreen_init
 
 
@@ -17,7 +18,7 @@ class GameScreen_musicDownload(GameScreen_init, QMainWindow):
         self.header_musicDownload = None
         self.response_data = None
         # 前端post设置
-        self
+        self.post_musicUpload = MyPost('/musicAdmin/musicUpload')
         # 设置表格头的伸缩模式，也就是让表格铺满整个QTableWidget控件
         self.tableWidget_music_download.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.connecter_musicDownload()
@@ -30,7 +31,6 @@ class GameScreen_musicDownload(GameScreen_init, QMainWindow):
         self.pushButton_music_search.clicked.connect(self.get_KuWoMusic)
         self.tableWidget_music_download.itemSelectionChanged.connect(self.get_song_url)
         self.pushButton_music_download.clicked.connect(self.download_music)
-        pass
 
     # 爬虫获取音乐信息
     def get_KuWoMusic(self):
@@ -162,9 +162,10 @@ class GameScreen_musicDownload(GameScreen_init, QMainWindow):
                     # re.findall正则获取音乐名称
                     music_name = re.findall(r'(.+?)\.mp3', re.findall(r'[^\\/:*?"<>|\r\n]+$', file_path)[0])[0]
                     print(music_name)
-                    music_path = 'musics/' + music_name + '.mp3'
-                    self.database_download.insert("music_table", [music_name, music_path])
-                    QMessageBox.information(self, "下载成功", '歌曲：%s\n保存地址：%s' % (self.song_name, music_path))
+                    music_path = music_storePath + music_name + '.mp3'
+                    musicPath = self.post_musicUpload.uploadFile_response(music_path, music_name, "mp3")["服务器保存地址"]
+                    QMessageBox.information(self, "下载成功", '歌曲：%s\n本地保存地址：%s\n服务器保存地址：%s'
+                                            % (self.song_name, music_path, musicPath))
             except Exception:
                 QMessageBox.warning(self, "注意", "未找到存放歌曲的文件夹")
         else:

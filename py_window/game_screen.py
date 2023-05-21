@@ -4,12 +4,12 @@ from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QMouseEvent
 from PyQt5.QtWidgets import QMessageBox
 from .game_screen_window import GameScreen_music, GameScreen_game, GameScreen_user, \
-    GameScreen_quanxian, GameScreen_musicManagement
+    GameScreen_quanxian, GameScreen_musicManagement, GameScreen_musicDownload
 
 
 # 使用界面窗口
 class GameScreen(GameScreen_music, GameScreen_game, GameScreen_user,
-                 GameScreen_quanxian, GameScreen_musicManagement):
+                 GameScreen_quanxian, GameScreen_musicManagement, GameScreen_musicDownload):
 
     # 窗口切换信号
     switch_window = QtCore.pyqtSignal()
