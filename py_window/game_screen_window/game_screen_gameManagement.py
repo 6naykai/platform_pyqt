@@ -156,7 +156,7 @@ class GameScreen_gameManagement(GameScreen_game):
         if len(row_select) == 0:
             return
         Id = row_select[0].row()
-        print(self.displayList_game[Id-1])
+        print(self.displayList_game[Id - 1])
         if int(Id) <= len(self.displayList_game):
             print("删除一条数据")
             self.displayList_game.pop(Id - 1)
@@ -182,8 +182,22 @@ class GameScreen_gameManagement(GameScreen_game):
                 if item[0] not in idList:
                     print("insert game")
                 else:
-                    self.post_gameUpdateIsAdded.response_json({'gameName': item[0],
-                                                               'newIsAdded': item[2]})
+                    gameUpdatePath = self.post_gameUpdateIsAdded.response_json({'gameName': item[0],
+                                                                                'newIsAdded': item[2]})["更新游戏路径"]
+                    # re.findall正则获取游戏uuid
+                    gameUuid = re.findall(r'(.+?)\.exe', re.findall(r'[^\\/:*?"<>|\r\n]+$', gameUpdatePath)[0])[0]
+                    # print(gameUuid)
+                    gameUuid = gameUuid.replace('-', '_')
+                    # **首先判断是否已创建了子控件**
+                    if gameUuid in self.gamesDict:
+                        # 再判断是否显示
+                        if item[2]:
+                            exec('self.widget_{}.show()'.format(gameUuid))
+                        else:
+                            exec('self.widget_{}.hide()'.format(gameUuid))
+                    else:
+                        # 创建子控件
+                        self.gameWidget_init()
                     print("update game", item)
         for item in self.saveList_game:
             if item[0] not in _idList:
@@ -230,4 +244,3 @@ class GameScreen_gameManagement(GameScreen_game):
         self.gameWidget_init()
         # 调用刷新按钮函数,更新save列表等
         self.refresh_game()
-
